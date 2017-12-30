@@ -45,7 +45,7 @@ class PostController extends Controller
 //        $post = $post->getPost($session, $id);
 //        $post = POST::find($id);
 //        $post = Post::where('id', $id)->first();
-        $post = Post::where('id', '=' , $id)->first();
+        $post = Post::where('id', '=', $id)->first();
         return view('blog.post', ['post' => $post]);
     }
 
@@ -55,7 +55,7 @@ class PostController extends Controller
 //        $post = $post->getPost($session, $id);
 //        $post = POST::find($id);
 //        $post = Post::where('id', $id)->first();
-        $post = Post::where('id', '=' , $id)->first();
+        $post = Post::where('id', '=', $id)->first();
         $like = new Like();
         $post->likes()->save($like);
         return redirect()->back();
@@ -69,12 +69,8 @@ class PostController extends Controller
 
     public function getAdminEdit($id)
     {
-//        $post = new Post();
-//        $post = $post->getPost($session, $id);
         $post = Post::find($id);
         $tags = Tag::all();
-//        $post = DB::select('select *from posts where id = ?', [$id]);
-
         return view('admin.edit', ['post' => $post, 'postId' => $id, 'tags' => $tags]);
     }
 
@@ -84,8 +80,8 @@ class PostController extends Controller
             'title' => 'required|min:5',
             'content' => 'required|min:10'
         ]);
-         // I have learn this method form pluralsight and it offers directly insertion of data without
-         //    writing a single line of query
+        // I have learn this method form pluralsight and it offers directly insertion of data without
+        //    writing a single line of query
         $user = Auth::user();
         $post = new Post([
             'title' => $request->input('title'),
@@ -118,6 +114,7 @@ class PostController extends Controller
         $post->tags()->sync($request->input('tags') === null ? [] : $request->input('tags'));
         return redirect()->route('admin.index')->with('info', 'Post edited, new Title is: ' . $request->input('title'));
     }
+
     public function getAdminDelete($id)
     {
         $post = Post::find($id);
